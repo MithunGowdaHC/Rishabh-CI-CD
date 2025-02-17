@@ -7,16 +7,11 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # This is where the workflow runs
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set up Docker
-        run: |
-          sudo apt update
-          sudo apt install -y docker.io
 
       - name: Build Docker image
         run: |
@@ -26,23 +21,23 @@ jobs:
         run: |
           docker save -o vite-app.tar vite-app
 
-      - name: Copy files to EC2
+      - name: Copy Docker image to EC2
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.VM_IP }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
+          host: ${{ secrets.VM_IP }}  # EC2 instance IP
+          username: ${{ secrets.VM_USER }}  # EC2 username (e.g., 'ec2-user' or 'ubuntu')
+          key: ${{ secrets.VM_SSH_KEY }}  # EC2 SSH key
           source: "vite-app.tar"
           target: "~/"
 
-      - name: SSH into EC2 and deploy
+      - name: SSH into EC2 and deploy the Docker image
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VM_IP }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           script: |
-            docker load -i ~/vite-app.tar
-            docker stop vite-container || true
-            docker rm vite-container || true
-            docker run -d -p 80:80 --name vite-container vite-app
+            docker load -i ~/vite-app.tar  # Load the Docker image on EC2
+            docker stop vite-container || true  # Stop any existing container (if running)
+            docker rm vite-container || true  # Remove the stopped container (if exists)
+            docker run -d -p 80:80 --name vite-container vite-app  # Run the new container in detached mode
