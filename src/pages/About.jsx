@@ -4,7 +4,7 @@ import { assets } from "../assets/assets";
 import NewsletterBox from '../components/NewsletterBox'
 
 
-const ABout = () => {
+const About = () => {
   return (
     <div>
       <div className=" text-2xl text-center pt-8 border-t">
@@ -75,4 +75,4 @@ const ABout = () => {
   );
 };
 
-export default ABout;
+export default About;
