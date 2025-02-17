@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import ABout from "./pages/ABout";
+import About from "./pages/ABout";
 import Cart from "./pages/Cart";
 import Collection from "./pages/Collection";
 import Contact from "./pages/Contact";
@@ -23,7 +23,7 @@ const App = () => {
       <SearchBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<ABout />} />
+        <Route path="/about" element={<About />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/collection" element={<Collection />} />
         <Route path='/product/:productId' element={<Product/>} />
