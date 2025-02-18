@@ -6,4 +6,3 @@ export default defineConfig({
   base: "/Rishabh-CI-CD/", // Change to your GitHub repo name
   plugins: [react()],
 });
-// vite.config.js
